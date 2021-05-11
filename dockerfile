@@ -23,8 +23,12 @@ RUN yum update -y && \
     echo "extension=oci8.so" > /etc/php.d/oci8.ini && \
     cd /opt/oracle/php-7.4.19/ext/pdo_oci/ && \
     phpize && ./configure --with-pdo-oci=instantclient,/usr/lib/oracle/19.6/client64/lib && make install && \ 
-    echo "extension=pdo_oci.so" > /etc/php.d/pdo_oci.ini
-
+    echo "extension=pdo_oci.so" > /etc/php.d/pdo_oci.ini && \
+    cd /opt/oracle && \
+    rm -f oracle-instantclient19.6-basic-19.6.0.0.0-1.x86_64.rpm oracle-instantclient19.6-devel-19.6.0.0.0-1.x86_64.rpm && \
+    rm -f php-7.4.19.tar.gz && \
+    yum clean all -y
+   
 VOLUME /var/www/html/
 
 WORKDIR /var/www/html/
@@ -35,6 +39,3 @@ ENTRYPOINT  ["/usr/sbin/httpd"]
 
 CMD ["-D", "FOREGROUND"]
 
-    
-
-    
